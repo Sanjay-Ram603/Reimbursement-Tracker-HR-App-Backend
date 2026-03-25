@@ -1,4 +1,5 @@
 ﻿using ReimbursementTrackerApp.Models.Enumerations;
+using Microsoft.AspNetCore.Http;
 
 namespace ReimbursementTrackerApp.DataTransferObjects.Reimbursement
 {
@@ -7,7 +8,7 @@ namespace ReimbursementTrackerApp.DataTransferObjects.Reimbursement
         public Guid ExpenseCategoryId { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; } = string.Empty;
-        public ReimbursementStatusType Status { get; set; }
+        public IFormFile? Attachment { get; set; }
         public DateTime ExpenseDate { get; set; }
     }
 }

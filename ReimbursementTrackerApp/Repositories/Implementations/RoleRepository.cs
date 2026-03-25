@@ -33,8 +33,9 @@ namespace ReimbursementSystem.Repositories.Implementations
         public async Task<Role?> GetByRoleNameAsync(string roleName)
         {
             return await _context.Roles
-                .FirstOrDefaultAsync(r => r.RoleName == roleName);
+                .FirstOrDefaultAsync(r => r.RoleName.ToLower() == roleName.ToLower());
         }
+
 
         public async Task SaveChangesAsync()
         {

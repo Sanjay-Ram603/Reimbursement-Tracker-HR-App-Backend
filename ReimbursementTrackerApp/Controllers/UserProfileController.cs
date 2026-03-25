@@ -33,5 +33,16 @@ namespace ReimbursementTrackerApp.Controllers
             await _service.UpdateProfileAsync(userId, request);
             return Ok();
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteMyAccount()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            await _service.DeleteUserAsync(userId);
+
+            return Ok("Account deleted successfully");
+        }
+
     }
 }

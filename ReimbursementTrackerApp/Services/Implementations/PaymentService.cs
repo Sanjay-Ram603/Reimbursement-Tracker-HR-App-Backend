@@ -62,5 +62,16 @@ namespace ReimbursementTrackerApp.Services.Implementations
             );
         }
 
+        public async Task<IEnumerable<PaymentRecord>> GetAllPaymentsAsync()
+        {
+            return await _paymentRepository.GetAllAsync();
+        }
+
+        public async Task<PaymentRecord?> GetByRequestIdAsync(Guid requestId)
+        {
+            return await _paymentRepository.GetByRequestIdAsync(requestId);
+        }
+
+
     }
 }

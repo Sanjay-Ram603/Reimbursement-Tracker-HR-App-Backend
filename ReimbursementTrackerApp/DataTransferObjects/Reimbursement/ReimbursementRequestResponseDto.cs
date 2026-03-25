@@ -8,5 +8,7 @@ namespace ReimbursementTrackerApp.DataTransferObjects.Reimbursement
         public decimal Amount { get; set; }
         public string Description { get; set; } = string.Empty;
         public ReimbursementStatusType Status { get; set; }
+        public string? AttachmentPath { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

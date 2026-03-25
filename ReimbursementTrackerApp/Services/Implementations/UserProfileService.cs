@@ -41,5 +41,17 @@ namespace ReimbursementTrackerApp.Services.Implementations
             await _userRepository.UpdateAsync(user);
             await _userRepository.SaveChangesAsync();
         }
+
+        public async Task DeleteUserAsync(Guid userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+
+            if (user == null)
+                throw new Exception("User not found");
+
+            await _userRepository.DeleteAsync(user);
+            await _userRepository.SaveChangesAsync();
+        }
+
     }
 }

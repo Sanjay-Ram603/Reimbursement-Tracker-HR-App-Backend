@@ -16,6 +16,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ApprovalController",
+    "Method": "GetAll",
+    "RelativePath": "api/Approval",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ApprovalController",
+    "Method": "GetByRequestId",
+    "RelativePath": "api/Approval/request/{requestId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ReimbursementTrackerApp.Controllers.AuthenticationController",
     "Method": "Login",
     "RelativePath": "api/Authentication/login",
@@ -68,6 +94,75 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ExpenseCategoryController",
+    "Method": "Create",
+    "RelativePath": "api/ExpenseCategory",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ExpenseCategoryController",
+    "Method": "GetById",
+    "RelativePath": "api/ExpenseCategory/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ExpenseCategoryController",
+    "Method": "Update",
+    "RelativePath": "api/ExpenseCategory/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "categoryName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ExpenseCategoryController",
+    "Method": "Delete",
+    "RelativePath": "api/ExpenseCategory/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ReimbursementTrackerApp.Controllers.NotificationController",
     "Method": "GetMyNotifications",
     "RelativePath": "api/Notification",
@@ -94,6 +189,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.PaymentController",
+    "Method": "GetAll",
+    "RelativePath": "api/Payment",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.PaymentController",
+    "Method": "GetByRequest",
+    "RelativePath": "api/Payment/request/{requestId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ReimbursementTrackerApp.Controllers.ReimbursementRequestController",
     "Method": "Create",
     "RelativePath": "api/ReimbursementRequest",
@@ -102,9 +223,29 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "ReimbursementTrackerApp.DataTransferObjects.Reimbursement.CreateReimbursementRequestDto",
-        "IsRequired": true
+        "Name": "ExpenseCategoryId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Amount",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Attachment",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "ExpenseDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -121,7 +262,23 @@
   },
   {
     "ContainingType": "ReimbursementTrackerApp.Controllers.ReimbursementRequestController",
-    "Method": "UpdateStatus",
+    "Method": "GetById",
+    "RelativePath": "api/ReimbursementRequest/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ReimbursementRequestController",
+    "Method": "Update",
     "RelativePath": "api/ReimbursementRequest/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
@@ -157,6 +314,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ReimbursementRequestController",
+    "Method": "GetAllRequests",
+    "RelativePath": "api/ReimbursementRequest/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ReimbursementRequestController",
+    "Method": "DownloadAttachment",
+    "RelativePath": "api/ReimbursementRequest/download/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ReimbursementTrackerApp.Controllers.ReportController",
     "Method": "Generate",
     "RelativePath": "api/Report",
@@ -172,6 +355,11 @@
       {
         "Name": "toDate",
         "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -211,6 +399,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.UserProfileController",
+    "Method": "DeleteMyAccount",
+    "RelativePath": "api/UserProfile",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

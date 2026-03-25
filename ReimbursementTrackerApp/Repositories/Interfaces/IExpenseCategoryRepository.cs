@@ -8,6 +8,8 @@ namespace ReimbursementTrackerApp.Repositories.Interfaces
         Task<IEnumerable<ExpenseCategory>> GetAllAsync();
         Task<ExpenseCategory?> GetByIdAsync(Guid categoryId);
         Task AddAsync(ExpenseCategory category);
+        Task UpdateAsync(ExpenseCategory category);
+        Task DeleteAsync(ExpenseCategory category);
         Task SaveChangesAsync();
     }
 }

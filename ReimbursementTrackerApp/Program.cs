@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
+
+
 using ReimbursementSystem.Repositories.Implementations;
 using ReimbursementTrackerApp.Contexts;
 using ReimbursementTrackerApp.Models.Identity;
@@ -15,6 +17,16 @@ using ReimbursementTrackerApp.Services.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 
 builder.Services.AddDbContext<ReimbursementDbContext>(options =>
@@ -32,6 +44,7 @@ builder.Services.AddScoped<IPolicyRepository, PolicyRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 
+
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IReimbursementRequestRepository, ReimbursementRequestRepository>();
@@ -39,6 +52,8 @@ builder.Services.AddScoped<IReimbursementRequestRepository, ReimbursementRequest
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+builder.Services.AddScoped<IExpenseCategoryService, ExpenseCategoryService>();
+
 builder.Services.AddScoped<IReimbursementService, ReimbursementService>();
 builder.Services.AddScoped<IApprovalService, ApprovalService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
@@ -91,9 +106,7 @@ builder.Services.AddSwaggerGen(c =>
 {
 c.SwaggerDoc("v1", new OpenApiInfo
 {
-Title = "BusTicketBooking API",
-Version = "v1",
-Description = "Web API for Bus Ticket Booking (Auth + Roles + Generic Repository)"
+
 });
 
 // JWT security definition for Swagger "Authorize" button
@@ -130,6 +143,8 @@ c.AddSecurityRequirement(new OpenApiSecurityRequirement
         app.UseSwaggerUI();
     }
 
+
+    app.UseCors("AllowAngular");
     app.UseHttpsRedirection();
 
     app.UseMiddleware<ReimbursementTrackerApp.Middleware.GlobalExceptionMiddleware>();
@@ -137,6 +152,9 @@ c.AddSecurityRequirement(new OpenApiSecurityRequirement
     app.UseAuthorization();
 
     app.MapControllers();
+
+    app.UseStaticFiles();
+
 
 
 

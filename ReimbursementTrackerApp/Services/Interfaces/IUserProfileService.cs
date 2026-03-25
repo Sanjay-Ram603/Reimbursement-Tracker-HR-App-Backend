@@ -6,5 +6,8 @@ namespace ReimbursementTrackerApp.Services.Interfaces
     {
         Task<UserProfileResponseDto> GetProfileAsync(Guid userId);
         Task UpdateProfileAsync(Guid userId, UpdateUserProfileRequestDto request);
+
+        Task DeleteUserAsync(Guid userId);
+
     }
 }

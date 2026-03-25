@@ -1,10 +1,6 @@
 {
   "openapi": "3.0.1",
-  "info": {
-    "title": "BusTicketBooking API",
-    "description": "Web API for Bus Ticket Booking (Auth + Roles + Generic Repository)",
-    "version": "v1"
-  },
+  "info": { },
   "paths": {
     "/api/Approval": {
       "post": {
@@ -30,6 +26,39 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Approval"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Approval/request/{requestId}": {
+      "get": {
+        "tags": [
+          "Approval"
+        ],
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -121,6 +150,97 @@
             "description": "Success"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "ExpenseCategory"
+        ],
+        "parameters": [
+          {
+            "name": "categoryName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ExpenseCategory/{id}": {
+      "get": {
+        "tags": [
+          "ExpenseCategory"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ExpenseCategory"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "categoryName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ExpenseCategory"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
       }
     },
     "/api/Notification": {
@@ -164,6 +284,39 @@
             "description": "Success"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Payment/request/{requestId}": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
       }
     },
     "/api/ReimbursementRequest": {
@@ -173,19 +326,47 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreateReimbursementRequestDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateReimbursementRequestDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateReimbursementRequestDto"
+                "type": "object",
+                "properties": {
+                  "ExpenseCategoryId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "Amount": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "Attachment": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "ExpenseDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              "encoding": {
+                "ExpenseCategoryId": {
+                  "style": "form"
+                },
+                "Amount": {
+                  "style": "form"
+                },
+                "Description": {
+                  "style": "form"
+                },
+                "Attachment": {
+                  "style": "form"
+                },
+                "ExpenseDate": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -208,6 +389,27 @@
       }
     },
     "/api/ReimbursementRequest/{id}": {
+      "get": {
+        "tags": [
+          "ReimbursementRequest"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
       "put": {
         "tags": [
           "ReimbursementRequest"
@@ -270,6 +472,41 @@
         }
       }
     },
+    "/api/ReimbursementRequest/all": {
+      "get": {
+        "tags": [
+          "ReimbursementRequest"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ReimbursementRequest/download/{id}": {
+      "get": {
+        "tags": [
+          "ReimbursementRequest"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Report": {
       "get": {
         "tags": [
@@ -290,6 +527,13 @@
             "schema": {
               "type": "string",
               "format": "date-time"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -357,6 +601,16 @@
             "description": "Success"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "UserProfile"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
       }
     }
   },
@@ -375,31 +629,6 @@
           "comments": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateReimbursementRequestDto": {
-        "type": "object",
-        "properties": {
-          "expenseCategoryId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "amount": {
-            "type": "number",
-            "format": "double"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/ReimbursementStatusType"
-          },
-          "expenseDate": {
-            "type": "string",
-            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -504,9 +733,6 @@
           "description": {
             "type": "string",
             "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/ReimbursementStatusType"
           }
         },
         "additionalProperties": false

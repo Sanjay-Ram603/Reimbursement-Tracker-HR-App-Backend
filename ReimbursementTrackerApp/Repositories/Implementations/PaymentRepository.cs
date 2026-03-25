@@ -29,5 +29,13 @@ namespace ReimbursementTrackerApp.Repositories.Implementations
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<PaymentRecord>> GetAllAsync()
+        {
+            return await _context.PaymentRecords.ToListAsync();
+        }
+
+      
+
     }
 }

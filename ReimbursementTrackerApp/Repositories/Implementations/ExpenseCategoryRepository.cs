@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReimbursementTrackerApp.Contexts;
-
 using ReimbursementTrackerApp.Repositories.Interfaces;
 using ReimbursementTrackerApp.Models.Reimbursement;
 
@@ -28,6 +27,20 @@ namespace ReimbursementSystem.Repositories.Implementations
         public async Task<ExpenseCategory?> GetByIdAsync(Guid categoryId)
         {
             return await _context.ExpenseCategories.FindAsync(categoryId);
+        }
+
+        // ✅ ADD THIS
+        public Task UpdateAsync(ExpenseCategory category)
+        {
+            _context.ExpenseCategories.Update(category);
+            return Task.CompletedTask;
+        }
+
+        // ✅ ADD THIS
+        public Task DeleteAsync(ExpenseCategory category)
+        {
+            _context.ExpenseCategories.Remove(category);
+            return Task.CompletedTask;
         }
 
         public async Task SaveChangesAsync()

@@ -31,5 +31,19 @@ namespace ReimbursementTrackerApp.Repositories.Implementations
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<ApprovalHistory>> GetAllAsync()
+        {
+            return await _context.ApprovalHistories.ToListAsync();
+        }
+
+        //public async Task<IEnumerable<ApprovalHistory>> GetByRequestIdAsync(Guid requestId)
+        //{
+        //    return await _context.ApprovalHistories
+        //        .Where(a => a.ReimbursementRequestId == requestId)
+        //        .ToListAsync();
+        //}
+
+
     }
 }

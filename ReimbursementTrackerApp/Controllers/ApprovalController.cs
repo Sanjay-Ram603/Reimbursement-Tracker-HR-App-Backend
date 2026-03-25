@@ -7,6 +7,9 @@ using System.Security.Claims;
 
 namespace ReimbursementTrackerApp.Controllers
 {
+    
+
+
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
@@ -27,6 +30,23 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok();
         }
 
-       
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _service.GetAllApprovalsAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("request/{requestId}")]
+        public async Task<IActionResult> GetByRequestId(Guid requestId)
+        {
+            var result = await _service.GetByRequestIdAsync(requestId);
+            return Ok(result);
+        }
+
+
+
+
     }
 }

@@ -8,5 +8,9 @@ namespace ReimbursementTrackerApp.Repositories.Interfaces
         Task AddAsync(ApprovalHistory approvalHistory);
         Task<IEnumerable<ApprovalHistory>> GetByRequestIdAsync(Guid requestId);
         Task SaveChangesAsync();
+        Task<IEnumerable<ApprovalHistory>> GetAllAsync();
+       
+
+
     }
 }

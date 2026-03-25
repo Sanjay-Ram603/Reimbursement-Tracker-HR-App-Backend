@@ -8,5 +8,8 @@ namespace ReimbursementTrackerApp.Repositories.Interfaces
         Task AddAsync(PaymentRecord paymentRecord);
         Task<PaymentRecord?> GetByRequestIdAsync(Guid requestId);
         Task SaveChangesAsync();
+        Task<IEnumerable<PaymentRecord>> GetAllAsync();
+     
+
     }
 }

@@ -4,6 +4,12 @@ namespace ReimbursementTrackerApp.Services.Interfaces
 {
     public interface IReportService
     {
-        Task<IEnumerable<ReimbursementReportResponseDto>> GenerateReportAsync(DateTime fromDate, DateTime toDate, int startIndex, int pageSize);
+        Task<IEnumerable<ReimbursementReportResponseDto>> GenerateReportAsync(
+            DateTime fromDate,
+            DateTime toDate,
+            string? status,
+            int startIndex,
+            int pageSize);
+
     }
 }

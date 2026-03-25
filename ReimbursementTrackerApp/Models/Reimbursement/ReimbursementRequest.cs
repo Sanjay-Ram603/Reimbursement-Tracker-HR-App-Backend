@@ -24,6 +24,10 @@ namespace ReimbursementTrackerApp.Models.Reimbursement
         public ReimbursementStatusType Status { get; set; }
 
         [Required]
+        public string? AttachmentPath { get; set; }
+
+
+        [Required]
         public DateTime ExpenseDate { get; set; }
 
         [Required]

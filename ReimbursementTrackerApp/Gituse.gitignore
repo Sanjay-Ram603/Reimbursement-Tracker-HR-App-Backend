@@ -3,13 +3,12 @@
 bin/
 obj/
 
-# User specific files
-*.user
-*.suo
-
-# Logs
-*.log
-
 # OS files
 .DS_Store
 Thumbs.db
+
+# Node (if any)
+node_modules/
+
+# Logs
+*.log

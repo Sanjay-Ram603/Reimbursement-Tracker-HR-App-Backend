@@ -48,6 +48,12 @@ namespace ReimbursementTrackerApp.Repositories.Implementations
             await Task.CompletedTask;
         }
 
+        public async Task DeletesAsync(User user)
+        {
+            _context.Users.Remove(user);
+        }
+
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

@@ -14,18 +14,58 @@ namespace ReimbursementTrackerApp.Services.Implementations
             _repository = repository;
         }
 
-        public async Task<IEnumerable<ReimbursementReportResponseDto>> GenerateReportAsync(DateTime fromDate, DateTime toDate, int startIndex, int pageSize)
+        public async Task<IEnumerable<ReimbursementReportResponseDto>> GenerateReportAsync(
+    DateTime fromDate,
+    DateTime toDate,
+    string? status,
+    int startIndex,
+    int pageSize)
         {
             var requests = await _repository.GetAllAsync();
 
-            return requests
-                .Where(r => r.CreatedAt >= fromDate && r.CreatedAt <= toDate)
+            // 🔥 DATE FILTER
+            var filtered = requests
+                .Where(r => r.CreatedAt >= fromDate && r.CreatedAt <= toDate);
+
+            // 🔥 STATUS FILTER
+            if (!string.IsNullOrEmpty(status))
+            {
+                switch (status.ToLower())
+                {
+                    case "pending":
+                        filtered = filtered.Where(r =>
+                            r.Status == Models.Enumerations.ReimbursementStatusType.Submitted ||
+                            r.Status == Models.Enumerations.ReimbursementStatusType.ManagerApproved);
+                        break;
+
+                    case "approved":
+                        filtered = filtered.Where(r =>
+                            r.Status == Models.Enumerations.ReimbursementStatusType.FinanceApproved ||
+                            r.Status == Models.Enumerations.ReimbursementStatusType.Paid);
+                        break;
+
+                    case "rejected":
+                        filtered = filtered.Where(r =>
+                            r.Status == Models.Enumerations.ReimbursementStatusType.Rejected);
+                        break;
+
+                    default:
+                        throw new Exception("Invalid status filter.");
+                }
+            }
+
+            // 🔥 FINAL RESULT + PAGINATION
+            return filtered
                 .Select(r => new ReimbursementReportResponseDto
                 {
                     ReimbursementRequestId = r.ReimbursementRequestId,
                     Amount = r.Amount,
                     CreatedAt = r.CreatedAt
-                }).Skip(startIndex * pageSize).Take(pageSize);
+                })
+                .Skip(startIndex * pageSize)
+                .Take(pageSize);
         }
+
+
     }
 }
