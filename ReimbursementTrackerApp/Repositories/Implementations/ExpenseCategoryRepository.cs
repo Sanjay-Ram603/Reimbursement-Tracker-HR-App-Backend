@@ -29,14 +29,13 @@ namespace ReimbursementSystem.Repositories.Implementations
             return await _context.ExpenseCategories.FindAsync(categoryId);
         }
 
-        // ✅ ADD THIS
         public Task UpdateAsync(ExpenseCategory category)
         {
             _context.ExpenseCategories.Update(category);
             return Task.CompletedTask;
         }
 
-        // ✅ ADD THIS
+       
         public Task DeleteAsync(ExpenseCategory category)
         {
             _context.ExpenseCategories.Remove(category);

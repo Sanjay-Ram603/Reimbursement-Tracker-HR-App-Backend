@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ReimbursementTrackerApp.Models.Identity;
 using ReimbursementTrackerApp.Services.Interfaces;
 
 namespace ReimbursementTrackerApp.Controllers
@@ -18,17 +17,29 @@ namespace ReimbursementTrackerApp.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles="Admin")]
         public async Task<IActionResult> Generate(
-    DateTime fromDate,
-    DateTime toDate,
-    string? status, 
-    int startIndex = 0,
-    int pageSize = 5)
+            DateTime fromDate,
+            DateTime toDate,
+            string? status,
+            string? role,
+            int startIndex = 0,
+            int pageSize = 5)
         {
-            var report = await _service.GenerateReportAsync(fromDate, toDate, status, startIndex, pageSize);
+            var report = await _service.GenerateReportAsync(
+                fromDate, toDate, status, role, startIndex, pageSize);
             return Ok(report);
         }
 
+        [HttpGet("count")]
+        public async Task<IActionResult> GetCount(
+            DateTime fromDate,
+            DateTime toDate,
+            string? status,
+            string? role)
+        {
+            var count = await _service.GetTotalCountAsync(
+                fromDate, toDate, status, role);
+            return Ok(count);
+        }
     }
 }

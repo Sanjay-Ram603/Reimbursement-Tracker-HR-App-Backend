@@ -25,18 +25,18 @@ namespace ReimbursementTrackerApp.Services.Implementations
             _configuration = configuration;
         }
 
-        // 🔥 REGISTER 
+        //  REGISTER 
         public async Task<RegisterResponseDto> RegisterAsync(RegisterUserRequestDto request)
         {
             var existingUser = await _userRepository.GetByEmailAsync(request.Email);
             if (existingUser != null)
                 throw new Exception("User already exists.");
 
-            // ✅ Always assign Employee role
-            var role = await _roleRepository.GetByRoleNameAsync("Employee");
+            //  Validate that the requested role exists
+            var role = await _roleRepository.GetByIdAsync(request.RoleId);
 
             if (role == null)
-                throw new Exception("Default role 'Employee' not found in database.");
+                throw new Exception($"Role with ID '{request.RoleId}' not found in database.");
 
             var user = new User
             {
@@ -59,7 +59,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             };
         }
 
-        // 🔥 LOGIN
+        //  LOGIN
         public async Task<AuthenticationResponseDto> LoginAsync(LoginRequestDto request)
         {
             var user = await _userRepository.GetByEmailAsync(request.Email);
@@ -70,7 +70,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             if (!isPasswordValid)
                 throw new Exception("Invalid credentials.");
 
-            // ✅ Generate token with role
+            //  Generate token with role
             var token = await GenerateJwtToken(user);
 
             return new AuthenticationResponseDto
@@ -81,7 +81,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             };
         }
 
-        // 🔥 JWT TOKEN WITH ROLE
+        //  JWT TOKEN WITH ROLE
         private async Task<string> GenerateJwtToken(User user)
         {
             var role = await _roleRepository.GetByIdAsync(user.RoleId);
@@ -99,7 +99,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
 
-                // 🔥 MOST IMPORTANT (Role-based auth)
+                //  (Role-based auth)
                 new Claim(ClaimTypes.Role, role.RoleName)
             };
 

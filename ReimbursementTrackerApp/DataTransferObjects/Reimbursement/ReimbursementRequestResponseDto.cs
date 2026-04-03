@@ -10,5 +10,8 @@ namespace ReimbursementTrackerApp.DataTransferObjects.Reimbursement
         public ReimbursementStatusType Status { get; set; }
         public string? AttachmentPath { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string EmployeeName { get; set; } = string.Empty;
+        public string EmployeeEmail { get; set; } = string.Empty;
+        public string EmployeeRole { get; set; } = string.Empty;
     }
 }

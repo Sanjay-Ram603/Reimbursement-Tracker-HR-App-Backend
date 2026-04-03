@@ -16,32 +16,30 @@ namespace ReimbursementTrackerApp.Services.Implementations
             _repository = repository;
         }
 
-        // ✅ CREATE REQUEST (WITH FILE UPLOAD)
+        // CREATE REQUEST 
         public async Task<Guid> CreateRequestAsync(Guid userId, CreateReimbursementRequestDto request)
         {
             string? filePath = null;
 
             if (request.Attachment != null)
             {
-                // 🔥 FILE VALIDATION
-
-                // ✅ Size validation (5MB)
+                
                 if (request.Attachment.Length > 5 * 1024 * 1024)
                     throw new Exception("File size exceeds 5MB");
 
-                // ✅ Attachment validation
+               
                 if (request.Attachment.Length == 0)
                     throw new Exception("Empty file is not allowed");
 
 
-                // ✅ Type validation
+               
                 var allowedTypes = new[] { ".jpg", ".jpeg", ".png", ".pdf" };
                 var extension = Path.GetExtension(request.Attachment.FileName).ToLower();
 
                 if (!allowedTypes.Contains(extension))
                     throw new Exception("Invalid file type. Only JPG, PNG, PDF allowed.");
 
-                // 🔥 SAVE FILE
+                
                 var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
 
                 if (!Directory.Exists(folderPath))
@@ -69,10 +67,10 @@ namespace ReimbursementTrackerApp.Services.Implementations
                 ExpenseDate = request.ExpenseDate,
                 CreatedAt = DateTime.UtcNow,
 
-                // 🔥 SYSTEM CONTROLLED
+              
                 Status = ReimbursementStatusType.Submitted,
 
-                // ✅ SAVE FILE PATH
+              
                 AttachmentPath = filePath
             };
 
@@ -82,11 +80,10 @@ namespace ReimbursementTrackerApp.Services.Implementations
             return entity.ReimbursementRequestId;
         }
 
-        // ✅ GET USER REQUESTS
+       
         public async Task<IEnumerable<ReimbursementRequestResponseDto>> GetUserRequestsAsync(Guid userId)
         {
             var requests = await _repository.GetByUserIdAsync(userId);
-
             return requests.Select(r => new ReimbursementRequestResponseDto
             {
                 ReimbursementRequestId = r.ReimbursementRequestId,
@@ -94,11 +91,15 @@ namespace ReimbursementTrackerApp.Services.Implementations
                 Description = r.Description,
                 Status = r.Status,
                 AttachmentPath = r.AttachmentPath,
-                CreatedAt = r.CreatedAt
+                CreatedAt = r.CreatedAt,
+                EmployeeName = r.User != null ? $"{r.User.FirstName} {r.User.LastName}" : "Unknown",
+                EmployeeEmail = r.User?.Email ?? string.Empty,
+                EmployeeRole = r.User?.Role?.RoleName ?? string.Empty
             });
         }
 
-        // ✅ UPDATE REQUEST (ONLY IF SUBMITTED)
+
+        //  UPDATE REQUEST 
         public async Task UpdateRequestAsync(Guid requestId, UpdateReimbursementStatusRequestDto request)
         {
             var entity = await _repository.GetByIdAsync(requestId);
@@ -116,7 +117,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             await _repository.SaveChangesAsync();
         }
 
-        // ✅ UPDATE STATUS
+        // UPDATE STATUS
         public async Task UpdateStatusAsync(Guid requestId, ReimbursementStatusType newStatus)
         {
             var entity = await _repository.GetByIdAsync(requestId);
@@ -133,7 +134,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             await _repository.SaveChangesAsync();
         }
 
-        // ✅ GET BY ID
+        // GET BY ID
         public async Task<ReimbursementRequestResponseDto?> GetByIdAsync(Guid id)
         {
             var r = await _repository.GetByIdAsync(id);
@@ -161,11 +162,14 @@ namespace ReimbursementTrackerApp.Services.Implementations
                 Description = r.Description,
                 Status = r.Status,
                 AttachmentPath = r.AttachmentPath,
-                CreatedAt = r.CreatedAt
+                CreatedAt = r.CreatedAt,
+                EmployeeName = r.User != null ? $"{r.User.FirstName} {r.User.LastName}" : "Unknown",
+                EmployeeEmail = r.User?.Email ?? string.Empty,
+                EmployeeRole = r.User?.Role?.RoleName ?? string.Empty
             });
         }
 
-        // ✅ DELETE
+        // DELETE
         public async Task<bool> DeleteReimbursementRequest(Guid id)
         {
             var request = await _repository.GetByIdAsync(id);

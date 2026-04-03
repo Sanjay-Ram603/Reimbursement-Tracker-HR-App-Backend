@@ -17,18 +17,24 @@
   },
   {
     "ContainingType": "ReimbursementTrackerApp.Controllers.ApprovalController",
-    "Method": "GetAll",
-    "RelativePath": "api/Approval",
+    "Method": "DownloadAttachment",
+    "RelativePath": "api/Approval/{requestId}/attachment",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "ReimbursementTrackerApp.Controllers.ApprovalController",
-    "Method": "GetByRequestId",
-    "RelativePath": "api/Approval/request/{requestId}",
+    "Method": "GetHistory",
+    "RelativePath": "api/Approval/{requestId}/history",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -340,6 +346,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ReimbursementRequestController",
+    "Method": "GetHeadRequests",
+    "RelativePath": "api/ReimbursementRequest/head",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ReimbursementTrackerApp.Controllers.ReportController",
     "Method": "Generate",
     "RelativePath": "api/Report",
@@ -363,6 +379,11 @@
         "IsRequired": false
       },
       {
+        "Name": "role",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "startIndex",
         "Type": "System.Int32",
         "IsRequired": false
@@ -370,6 +391,37 @@
       {
         "Name": "pageSize",
         "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReimbursementTrackerApp.Controllers.ReportController",
+    "Method": "GetCount",
+    "RelativePath": "api/Report/count",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fromDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "toDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "role",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],

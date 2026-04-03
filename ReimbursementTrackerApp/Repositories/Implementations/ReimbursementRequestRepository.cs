@@ -26,9 +26,10 @@ namespace ReimbursementTrackerApp.Repositories.Implementations
         {
             return await _context.ReimbursementRequests
                 .Include(r => r.ExpenseCategory)
+                .Include(r => r.User)
+                    .ThenInclude(u => u!.Role)
                 .ToListAsync();
         }
-
         public async Task<ReimbursementRequest?> GetByIdAsync(Guid requestId)
         {
             return await _context.ReimbursementRequests
@@ -40,6 +41,8 @@ namespace ReimbursementTrackerApp.Repositories.Implementations
         {
             return await _context.ReimbursementRequests
                 .Where(r => r.UserId == userId)
+                .Include(r => r.User)
+                    .ThenInclude(u => u.Role)
                 .ToListAsync();
         }
 
