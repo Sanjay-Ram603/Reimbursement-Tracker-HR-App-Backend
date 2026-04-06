@@ -16,7 +16,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             _repository = repository;
         }
 
-        // CREATE REQUEST 
+    
         public async Task<Guid> CreateRequestAsync(Guid userId, CreateReimbursementRequestDto request)
         {
             string? filePath = null;
@@ -99,7 +99,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
         }
 
 
-        //  UPDATE REQUEST 
+      
         public async Task UpdateRequestAsync(Guid requestId, UpdateReimbursementStatusRequestDto request)
         {
             var entity = await _repository.GetByIdAsync(requestId);
@@ -117,7 +117,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             await _repository.SaveChangesAsync();
         }
 
-        // UPDATE STATUS
+       
         public async Task UpdateStatusAsync(Guid requestId, ReimbursementStatusType newStatus)
         {
             var entity = await _repository.GetByIdAsync(requestId);
@@ -134,7 +134,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             await _repository.SaveChangesAsync();
         }
 
-        // GET BY ID
+      
         public async Task<ReimbursementRequestResponseDto?> GetByIdAsync(Guid id)
         {
             var r = await _repository.GetByIdAsync(id);

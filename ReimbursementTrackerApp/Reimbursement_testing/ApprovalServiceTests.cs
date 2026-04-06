@@ -48,8 +48,6 @@ namespace Reimbursement_testing
             };
         }
 
-        // ─── PROCESS APPROVAL ─────────────────────────────────────────────────────
-
         [Fact]
         public async Task ProcessApprovalAsync_ValidRequest_ApprovesSuccessfully()
         {
@@ -191,8 +189,6 @@ namespace Reimbursement_testing
             Assert.Equal(approverId, savedHistory!.ApproverUserId);
             Assert.Equal("Approved", savedHistory.Comments);
         }
-
-        // ─── GET APPROVAL HISTORY ─────────────────────────────────────────────────
 
         [Fact]
         public async Task GetApprovalHistoryAsync_ReturnsHistory()

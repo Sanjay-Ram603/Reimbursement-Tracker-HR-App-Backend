@@ -47,12 +47,12 @@ namespace Reimbursement_testing
             };
         }
 
-        // ─── PROCESS PAYMENT ──────────────────────────────────────────────────────
+    
 
         [Fact]
         public async Task ProcessPaymentAsync_ValidRequest_ProcessesSuccessfully()
         {
-            // Arrange
+           
             var req = MakeRequest();
             var dto = new ProcessPaymentRequestDto
             {
@@ -68,10 +68,10 @@ namespace Reimbursement_testing
             _notificationServiceMock.Setup(n => n.SendNotificationAsync(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
-            // Act
+            
             await _service.ProcessPaymentAsync(dto);
 
-            // Assert
+            
             Assert.Equal(ReimbursementStatusType.Paid, req.Status);
             _paymentRepoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
@@ -79,7 +79,7 @@ namespace Reimbursement_testing
         [Fact]
         public async Task ProcessPaymentAsync_RequestNotFound_ThrowsException()
         {
-            // Arrange
+            
             _requestRepoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((ReimbursementRequest?)null);
 
@@ -90,7 +90,7 @@ namespace Reimbursement_testing
                 PaymentMethod = PaymentMethodType.UPI
             };
 
-            // Act & Assert
+            
             var ex = await Assert.ThrowsAsync<Exception>(() => _service.ProcessPaymentAsync(dto));
             Assert.Equal("Reimbursement request not found.", ex.Message);
         }
@@ -98,7 +98,7 @@ namespace Reimbursement_testing
         [Fact]
         public async Task ProcessPaymentAsync_SetsStatusToPaid()
         {
-            // Arrange
+           
             var req = MakeRequest(ReimbursementStatusType.FinanceApproved);
             var dto = new ProcessPaymentRequestDto
             {
@@ -114,17 +114,17 @@ namespace Reimbursement_testing
             _notificationServiceMock.Setup(n => n.SendNotificationAsync(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
-            // Act
+            
             await _service.ProcessPaymentAsync(dto);
 
-            // Assert
+          
             Assert.Equal(ReimbursementStatusType.Paid, req.Status);
         }
 
         [Fact]
         public async Task ProcessPaymentAsync_CreatesPaymentRecord()
         {
-            // Arrange
+        
             var req = MakeRequest();
             PaymentRecord? savedPayment = null;
 
@@ -144,10 +144,9 @@ namespace Reimbursement_testing
             _notificationServiceMock.Setup(n => n.SendNotificationAsync(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
-            // Act
             await _service.ProcessPaymentAsync(dto);
 
-            // Assert
+         
             Assert.NotNull(savedPayment);
             Assert.Equal(PaymentMethodType.UPI, savedPayment!.PaymentMethod);
             Assert.Equal(req.ReimbursementRequestId, savedPayment.ReimbursementRequestId);
@@ -156,7 +155,7 @@ namespace Reimbursement_testing
         [Fact]
         public async Task ProcessPaymentAsync_SendsNotificationToUser()
         {
-            // Arrange
+         
             var userId = Guid.NewGuid();
             var req = MakeRequest(userId: userId);
             Guid? notifiedUserId = null;
@@ -177,19 +176,16 @@ namespace Reimbursement_testing
                 .Callback<Guid, string>((uid, _) => notifiedUserId = uid)
                 .Returns(Task.CompletedTask);
 
-            // Act
+         
             await _service.ProcessPaymentAsync(dto);
 
-            // Assert
             Assert.Equal(userId, notifiedUserId);
         }
-
-        // ─── GET ALL PAYMENTS ─────────────────────────────────────────────────────
 
         [Fact]
         public async Task GetAllPaymentsAsync_ReturnsAllPayments()
         {
-            // Arrange
+ 
             var payments = new List<PaymentRecord>
             {
                 new PaymentRecord { PaymentRecordId = Guid.NewGuid(), ReimbursementRequestId = Guid.NewGuid(), AmountPaid = 1000m, PaymentMethod = PaymentMethodType.Cash, TransactionReference = "T1", PaymentDate = DateTime.UtcNow },
@@ -198,19 +194,17 @@ namespace Reimbursement_testing
 
             _paymentRepoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(payments);
 
-            // Act
+
             var result = await _service.GetAllPaymentsAsync();
 
-            // Assert
             Assert.Equal(2, result.Count());
         }
 
-        // ─── GET BY REQUEST ID ────────────────────────────────────────────────────
 
         [Fact]
         public async Task GetByRequestIdAsync_ExistingId_ReturnsPayment()
         {
-            // Arrange
+     
             var requestId = Guid.NewGuid();
             var payment = new PaymentRecord
             {
@@ -224,10 +218,9 @@ namespace Reimbursement_testing
 
             _paymentRepoMock.Setup(r => r.GetByRequestIdAsync(requestId)).ReturnsAsync(payment);
 
-            // Act
+     
             var result = await _service.GetByRequestIdAsync(requestId);
 
-            // Assert
             Assert.NotNull(result);
             Assert.Equal(requestId, result!.ReimbursementRequestId);
         }
@@ -235,14 +228,13 @@ namespace Reimbursement_testing
         [Fact]
         public async Task GetByRequestIdAsync_NotFound_ReturnsNull()
         {
-            // Arrange
+    
             _paymentRepoMock.Setup(r => r.GetByRequestIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((PaymentRecord?)null);
 
-            // Act
+     
             var result = await _service.GetByRequestIdAsync(Guid.NewGuid());
 
-            // Assert
             Assert.Null(result);
         }
     }

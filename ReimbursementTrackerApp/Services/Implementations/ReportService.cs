@@ -24,15 +24,14 @@ namespace ReimbursementTrackerApp.Services.Implementations
         {
             var requests = await _repository.GetAllAsync();
 
-            // DATE FILTER
+        
             var filtered = requests
                 .Where(r => r.CreatedAt >= fromDate && r.CreatedAt <= toDate)
                 .Where(r => r.User != null);
 
-            // ROLE + STATUS FILTER
             if (!string.IsNullOrEmpty(role) && role.ToLower() == "finance")
             {
-                // FINANCE ROLE FILTERS
+                
                 if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
                 {
                     filtered = filtered.Where(r =>
@@ -69,13 +68,13 @@ namespace ReimbursementTrackerApp.Services.Implementations
             }
             else if (!string.IsNullOrEmpty(role) && role.ToLower() == "head")
             {
-                // HEAD - Only Manager & Finance role users claims
+              
                 filtered = filtered.Where(r =>
                     r.User != null &&
                     (r.User.Role!.RoleName == "Manager" ||
                      r.User.Role!.RoleName == "Finance"));
 
-                // Then apply status filter
+               
                 if (!string.IsNullOrEmpty(status) && status.ToLower() != "all")
                 {
                     switch (status.ToLower())
@@ -101,7 +100,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             }
             else
             {
-                // MANAGER ROLE FILTERS
+               
                 if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
                 {
                     filtered = filtered.Where(r =>
@@ -197,13 +196,13 @@ namespace ReimbursementTrackerApp.Services.Implementations
             }
             else if (!string.IsNullOrEmpty(role) && role.ToLower() == "head")
             {
-                // HEAD - Only Manager & Finance role users claims
+              
                 filtered = filtered.Where(r =>
                     r.User != null &&
                     (r.User.Role!.RoleName == "Manager" ||
                      r.User.Role!.RoleName == "Finance"));
 
-                // Then apply status filter
+                
                 if (!string.IsNullOrEmpty(status) && status.ToLower() != "all")
                 {
                     switch (status.ToLower())

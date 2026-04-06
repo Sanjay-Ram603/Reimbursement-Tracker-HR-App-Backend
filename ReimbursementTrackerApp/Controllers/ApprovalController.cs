@@ -22,7 +22,7 @@ namespace ReimbursementTrackerApp.Controllers
             _reimbursementService = reimbursementService;
         }
 
-        // PROCESS APPROVAL
+        
         [HttpPost]
         public async Task<IActionResult> Process(ApprovalActionRequestDto request)
         {
@@ -31,7 +31,7 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok("Approval processed successfully");
         }
 
-        // GET APPROVAL HISTORY BY REQUEST ID
+       
         [HttpGet("{requestId}/history")]
         public async Task<IActionResult> GetHistory(Guid requestId)
         {
@@ -39,7 +39,7 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok(history);
         }
 
-        // DOWNLOAD ATTACHMENT
+        
         [HttpGet("{requestId}/attachment")]
         public async Task<IActionResult> DownloadAttachment(Guid requestId)
         {

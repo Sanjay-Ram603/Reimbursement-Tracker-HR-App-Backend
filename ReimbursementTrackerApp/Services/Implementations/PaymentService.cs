@@ -31,7 +31,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
             if (reimbursement == null)
                 throw new Exception("Reimbursement request not found.");
 
-            // Create payment record
+         
             var payment = new PaymentRecord
             {
                 PaymentRecordId = Guid.NewGuid(),
@@ -44,7 +44,7 @@ namespace ReimbursementTrackerApp.Services.Implementations
 
             await _paymentRepository.AddAsync(payment);
 
-            // Update reimbursement status
+            
             reimbursement.Status = ReimbursementStatusType.Paid;
             await _requestRepository.UpdateAsync(reimbursement);
 
@@ -52,10 +52,9 @@ namespace ReimbursementTrackerApp.Services.Implementations
             await _paymentRepository.SaveChangesAsync();
 
 
-            // Save everything
-            //await _paymentRepository.SaveChangesAsync();
+            
 
-            // Create notification
+     
             await _notificationService.SendNotificationAsync(
                 reimbursement.UserId,
                 "Your reimbursement amount has been successfully paid by Finance."

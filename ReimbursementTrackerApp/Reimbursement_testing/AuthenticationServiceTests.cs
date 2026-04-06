@@ -32,8 +32,6 @@ namespace Reimbursement_testing
                 _configMock.Object);
         }
 
-        // ─── REGISTER ───────────────────────────────────────────────────────────
-
         [Fact]
         public async Task RegisterAsync_NewUser_ReturnsRegisterResponse()
         {
@@ -51,7 +49,7 @@ namespace Reimbursement_testing
             _userRepoMock.Setup(r => r.GetByEmailAsync(request.Email))
                 .ReturnsAsync((User?)null);
 
-            _roleRepoMock.Setup(r => r.GetByRoleNameAsync("Employee"))
+            _roleRepoMock.Setup(r => r.GetByIdAsync(roleId))
                 .ReturnsAsync(new Role { RoleId = roleId, RoleName = "Employee", CreatedAt = DateTime.UtcNow });
 
             _userRepoMock.Setup(r => r.AddAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
@@ -90,27 +88,26 @@ namespace Reimbursement_testing
         public async Task RegisterAsync_RoleNotFound_ThrowsException()
         {
             // Arrange
+            var roleId = Guid.NewGuid();
             var request = new RegisterUserRequestDto
             {
                 Email = "new@test.com",
                 Password = "Pass@123",
                 FirstName = "New",
                 LastName = "User",
-                RoleId = Guid.NewGuid()
+                RoleId = roleId
             };
 
             _userRepoMock.Setup(r => r.GetByEmailAsync(request.Email))
                 .ReturnsAsync((User?)null);
 
-            _roleRepoMock.Setup(r => r.GetByRoleNameAsync("Employee"))
+            _roleRepoMock.Setup(r => r.GetByIdAsync(roleId))
                 .ReturnsAsync((Role?)null);
 
             // Act & Assert
             var ex = await Assert.ThrowsAsync<Exception>(() => _service.RegisterAsync(request));
-            Assert.Contains("Employee", ex.Message);
+            Assert.Contains("not found", ex.Message);
         }
-
-        // ─── LOGIN ───────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task LoginAsync_ValidCredentials_ReturnsToken()

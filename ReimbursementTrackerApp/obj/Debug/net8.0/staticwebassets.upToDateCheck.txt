@@ -33,3 +33,6 @@ wwwroot\uploads\5e4e2e74-8994-447f-9525-7243a2740da8.png
 wwwroot\uploads\ee4127e4-a384-479e-865d-4ab0b11d4a33.png
 wwwroot\uploads\fff60c31-fc1c-4787-9128-04754f3c6d5a.png
 wwwroot\uploads\b960088b-92fb-4a05-8db1-172f7371b34d.png
+wwwroot\uploads\4c25135c-41e5-4e03-bbc2-7cd34895d785.png
+wwwroot\uploads\ed9103d6-45d7-48a6-84a4-f2e5ede6c729.png
+wwwroot\uploads\4d327fb2-d24c-42fa-9279-f8bb42283405.png

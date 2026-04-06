@@ -28,19 +28,17 @@ namespace Reimbursement_testing
             CreatedAt = DateTime.UtcNow
         };
 
-        // ─── GET PROFILE ──────────────────────────────────────────────────────────
-
         [Fact]
         public async Task GetProfileAsync_ExistingUser_ReturnsProfile()
         {
-            // Arrange
+           
             var user = MakeUser();
             _userRepoMock.Setup(r => r.GetByIdAsync(user.UserId)).ReturnsAsync(user);
 
-            // Act
+           
             var result = await _service.GetProfileAsync(user.UserId);
 
-            // Assert
+            
             Assert.NotNull(result);
             Assert.Equal(user.Email, result.Email);
             Assert.Equal(user.FirstName, result.FirstName);
@@ -50,11 +48,11 @@ namespace Reimbursement_testing
         [Fact]
         public async Task GetProfileAsync_UserNotFound_ThrowsException()
         {
-            // Arrange
+            
             _userRepoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((User?)null);
 
-            // Act & Assert
+          
             var ex = await Assert.ThrowsAsync<Exception>(() =>
                 _service.GetProfileAsync(Guid.NewGuid()));
             Assert.Equal("User not found.", ex.Message);
@@ -63,24 +61,22 @@ namespace Reimbursement_testing
         [Fact]
         public async Task GetProfileAsync_ReturnsCorrectUserId()
         {
-            // Arrange
+          
             var userId = Guid.NewGuid();
             var user = MakeUser(userId);
             _userRepoMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
 
-            // Act
+            
             var result = await _service.GetProfileAsync(userId);
 
-            // Assert
+            
             Assert.Equal(userId, result.UserId);
         }
-
-        // ─── UPDATE PROFILE ───────────────────────────────────────────────────────
 
         [Fact]
         public async Task UpdateProfileAsync_ValidUser_UpdatesFields()
         {
-            // Arrange
+            
             var user = MakeUser();
             _userRepoMock.Setup(r => r.GetByIdAsync(user.UserId)).ReturnsAsync(user);
             _userRepoMock.Setup(r => r.UpdateAsync(user)).Returns(Task.CompletedTask);
@@ -93,10 +89,9 @@ namespace Reimbursement_testing
                 Email = "jane@test.com"
             };
 
-            // Act
             await _service.UpdateProfileAsync(user.UserId, dto);
 
-            // Assert
+            
             Assert.Equal("Jane", user.FirstName);
             Assert.Equal("Smith", user.LastName);
             Assert.Equal("jane@test.com", user.Email);
@@ -105,11 +100,11 @@ namespace Reimbursement_testing
         [Fact]
         public async Task UpdateProfileAsync_UserNotFound_ThrowsException()
         {
-            // Arrange
+           
             _userRepoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((User?)null);
 
-            // Act & Assert
+            
             var ex = await Assert.ThrowsAsync<Exception>(() =>
                 _service.UpdateProfileAsync(Guid.NewGuid(), new UpdateUserProfileRequestDto()));
             Assert.Equal("User not found.", ex.Message);
@@ -118,7 +113,7 @@ namespace Reimbursement_testing
         [Fact]
         public async Task UpdateProfileAsync_NullFields_KeepsOriginalValues()
         {
-            // Arrange
+           
             var user = MakeUser();
             var originalEmail = user.Email;
             var originalFirst = user.FirstName;
@@ -134,10 +129,10 @@ namespace Reimbursement_testing
                 Email = null
             };
 
-            // Act
+            
             await _service.UpdateProfileAsync(user.UserId, dto);
 
-            // Assert
+            
             Assert.Equal(originalEmail, user.Email);
             Assert.Equal(originalFirst, user.FirstName);
         }
@@ -145,34 +140,32 @@ namespace Reimbursement_testing
         [Fact]
         public async Task UpdateProfileAsync_CallsSaveChanges()
         {
-            // Arrange
+            
             var user = MakeUser();
             _userRepoMock.Setup(r => r.GetByIdAsync(user.UserId)).ReturnsAsync(user);
             _userRepoMock.Setup(r => r.UpdateAsync(user)).Returns(Task.CompletedTask);
             _userRepoMock.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
-            // Act
+           
             await _service.UpdateProfileAsync(user.UserId, new UpdateUserProfileRequestDto { FirstName = "Updated" });
 
-            // Assert
+            
             _userRepoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
-
-        // ─── DELETE USER ──────────────────────────────────────────────────────────
 
         [Fact]
         public async Task DeleteUserAsync_ExistingUser_DeletesSuccessfully()
         {
-            // Arrange
+        
             var user = MakeUser();
             _userRepoMock.Setup(r => r.GetByIdAsync(user.UserId)).ReturnsAsync(user);
             _userRepoMock.Setup(r => r.DeleteAsync(user)).Returns(Task.CompletedTask);
             _userRepoMock.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
-            // Act
+            
             await _service.DeleteUserAsync(user.UserId);
 
-            // Assert
+            
             _userRepoMock.Verify(r => r.DeleteAsync(user), Times.Once);
             _userRepoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
@@ -180,11 +173,11 @@ namespace Reimbursement_testing
         [Fact]
         public async Task DeleteUserAsync_UserNotFound_ThrowsException()
         {
-            // Arrange
+           
             _userRepoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((User?)null);
 
-            // Act & Assert
+            
             var ex = await Assert.ThrowsAsync<Exception>(() =>
                 _service.DeleteUserAsync(Guid.NewGuid()));
             Assert.Equal("User not found", ex.Message);

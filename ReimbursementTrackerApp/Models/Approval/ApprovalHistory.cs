@@ -25,7 +25,6 @@ namespace ReimbursementTrackerApp.Models.Approval
         public DateTime ActionDate { get; set; }
 
        
-        // Navigation
         
         public Reimbursement.ReimbursementRequest? ReimbursementRequest { get; set; }
         public Identity.User? ApproverUser { get; set; }

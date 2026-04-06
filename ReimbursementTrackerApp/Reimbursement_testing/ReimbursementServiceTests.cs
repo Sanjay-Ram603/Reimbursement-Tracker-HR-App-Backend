@@ -19,8 +19,6 @@ namespace Reimbursement_testing
             _service = new ReimbursementService(_repoMock.Object);
         }
 
-        // ─── HELPERS ─────────────────────────────────────────────────────────────
-
         private static ReimbursementRequest MakeRequest(
             ReimbursementStatusType status = ReimbursementStatusType.Submitted,
             Guid? id = null,
@@ -50,12 +48,10 @@ namespace Reimbursement_testing
             };
         }
 
-        // ─── CREATE ───────────────────────────────────────────────────────────────
-
         [Fact]
         public async Task CreateRequestAsync_NoAttachment_CreatesRequest()
         {
-            // Arrange
+          
             var userId = Guid.NewGuid();
             var dto = new CreateReimbursementRequestDto
             {
@@ -69,10 +65,10 @@ namespace Reimbursement_testing
             _repoMock.Setup(r => r.AddAsync(It.IsAny<ReimbursementRequest>())).Returns(Task.CompletedTask);
             _repoMock.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
-            // Act
+      
             var result = await _service.CreateRequestAsync(userId, dto);
 
-            // Assert
+      
             Assert.NotEqual(Guid.Empty, result);
             _repoMock.Verify(r => r.AddAsync(It.IsAny<ReimbursementRequest>()), Times.Once);
             _repoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
@@ -81,7 +77,7 @@ namespace Reimbursement_testing
         [Fact]
         public async Task CreateRequestAsync_StatusIsAlwaysSubmitted()
         {
-            // Arrange
+    
             var userId = Guid.NewGuid();
             var dto = new CreateReimbursementRequestDto
             {
@@ -98,20 +94,18 @@ namespace Reimbursement_testing
                 .Returns(Task.CompletedTask);
             _repoMock.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
-            // Act
+      
             await _service.CreateRequestAsync(userId, dto);
 
-            // Assert
+     
             Assert.NotNull(saved);
             Assert.Equal(ReimbursementStatusType.Submitted, saved!.Status);
         }
 
-        // ─── GET USER REQUESTS ────────────────────────────────────────────────────
-
         [Fact]
         public async Task GetUserRequestsAsync_ReturnsUserRequests()
         {
-            // Arrange
+     
             var userId = Guid.NewGuid();
             var requests = new List<ReimbursementRequest>
             {
@@ -121,41 +115,37 @@ namespace Reimbursement_testing
 
             _repoMock.Setup(r => r.GetByUserIdAsync(userId)).ReturnsAsync(requests);
 
-            // Act
+          
             var result = await _service.GetUserRequestsAsync(userId);
 
-            // Assert
+       
             Assert.Equal(2, result.Count());
         }
 
         [Fact]
         public async Task GetUserRequestsAsync_EmptyList_ReturnsEmpty()
         {
-            // Arrange
+          
             var userId = Guid.NewGuid();
             _repoMock.Setup(r => r.GetByUserIdAsync(userId))
                 .ReturnsAsync(new List<ReimbursementRequest>());
 
-            // Act
+        
             var result = await _service.GetUserRequestsAsync(userId);
 
-            // Assert
             Assert.Empty(result);
         }
-
-        // ─── GET BY ID ────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task GetByIdAsync_ExistingId_ReturnsDto()
         {
-            // Arrange
+           
             var req = MakeRequest();
             _repoMock.Setup(r => r.GetByIdAsync(req.ReimbursementRequestId)).ReturnsAsync(req);
 
-            // Act
             var result = await _service.GetByIdAsync(req.ReimbursementRequestId);
 
-            // Assert
+        
             Assert.NotNull(result);
             Assert.Equal(req.ReimbursementRequestId, result!.ReimbursementRequestId);
             Assert.Equal(req.Amount, result.Amount);
@@ -164,42 +154,37 @@ namespace Reimbursement_testing
         [Fact]
         public async Task GetByIdAsync_NotFound_ReturnsNull()
         {
-            // Arrange
+         
             _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((ReimbursementRequest?)null);
 
-            // Act
+          
             var result = await _service.GetByIdAsync(Guid.NewGuid());
 
-            // Assert
+          
             Assert.Null(result);
         }
-
-        // ─── GET ALL ──────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task GetAllRequestsAsync_ReturnsAllRequests()
         {
-            // Arrange
+     
             var requests = new List<ReimbursementRequest>
             {
                 MakeRequest(), MakeRequest(), MakeRequest()
             };
             _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(requests);
 
-            // Act
+            
             var result = await _service.GetAllRequestsAsync();
 
-            // Assert
             Assert.Equal(3, result.Count());
         }
-
-        // ─── UPDATE ───────────────────────────────────────────────────────────────
 
         [Fact]
         public async Task UpdateRequestAsync_SubmittedRequest_UpdatesSuccessfully()
         {
-            // Arrange
+          
             var req = MakeRequest(ReimbursementStatusType.Submitted);
             _repoMock.Setup(r => r.GetByIdAsync(req.ReimbursementRequestId)).ReturnsAsync(req);
             _repoMock.Setup(r => r.UpdateAsync(It.IsAny<ReimbursementRequest>())).Returns(Task.CompletedTask);
@@ -211,10 +196,10 @@ namespace Reimbursement_testing
                 Description = "Updated description"
             };
 
-            // Act
+      
             await _service.UpdateRequestAsync(req.ReimbursementRequestId, dto);
 
-            // Assert
+       
             Assert.Equal(2000m, req.Amount);
             Assert.Equal("Updated description", req.Description);
             _repoMock.Verify(r => r.UpdateAsync(req), Times.Once);
@@ -223,11 +208,10 @@ namespace Reimbursement_testing
         [Fact]
         public async Task UpdateRequestAsync_NotFound_ThrowsException()
         {
-            // Arrange
+        
             _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((ReimbursementRequest?)null);
 
-            // Act & Assert
             var ex = await Assert.ThrowsAsync<Exception>(() =>
                 _service.UpdateRequestAsync(Guid.NewGuid(), new UpdateReimbursementStatusRequestDto()));
             Assert.Equal("Request not found.", ex.Message);
@@ -236,42 +220,40 @@ namespace Reimbursement_testing
         [Fact]
         public async Task UpdateRequestAsync_NonSubmittedStatus_ThrowsException()
         {
-            // Arrange
+   
             var req = MakeRequest(ReimbursementStatusType.ManagerApproved);
             _repoMock.Setup(r => r.GetByIdAsync(req.ReimbursementRequestId)).ReturnsAsync(req);
 
-            // Act & Assert
+
             var ex = await Assert.ThrowsAsync<Exception>(() =>
                 _service.UpdateRequestAsync(req.ReimbursementRequestId, new UpdateReimbursementStatusRequestDto()));
             Assert.Contains("Only submitted", ex.Message);
         }
 
-        // ─── UPDATE STATUS ────────────────────────────────────────────────────────
-
         [Fact]
         public async Task UpdateStatusAsync_ValidRequest_UpdatesStatus()
         {
-            // Arrange
+    
             var req = MakeRequest(ReimbursementStatusType.Submitted);
             _repoMock.Setup(r => r.GetByIdAsync(req.ReimbursementRequestId)).ReturnsAsync(req);
             _repoMock.Setup(r => r.UpdateAsync(It.IsAny<ReimbursementRequest>())).Returns(Task.CompletedTask);
             _repoMock.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
-            // Act
+         
             await _service.UpdateStatusAsync(req.ReimbursementRequestId, ReimbursementStatusType.ManagerApproved);
 
-            // Assert
+            
             Assert.Equal(ReimbursementStatusType.ManagerApproved, req.Status);
         }
 
         [Fact]
         public async Task UpdateStatusAsync_PaidRequest_ThrowsException()
         {
-            // Arrange
+          
             var req = MakeRequest(ReimbursementStatusType.Paid);
             _repoMock.Setup(r => r.GetByIdAsync(req.ReimbursementRequestId)).ReturnsAsync(req);
 
-            // Act & Assert
+          
             var ex = await Assert.ThrowsAsync<Exception>(() =>
                 _service.UpdateStatusAsync(req.ReimbursementRequestId, ReimbursementStatusType.Rejected));
             Assert.Contains("Paid requests", ex.Message);
@@ -280,31 +262,28 @@ namespace Reimbursement_testing
         [Fact]
         public async Task UpdateStatusAsync_NotFound_ThrowsException()
         {
-            // Arrange
+          
             _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((ReimbursementRequest?)null);
 
-            // Act & Assert
+           
             var ex = await Assert.ThrowsAsync<Exception>(() =>
                 _service.UpdateStatusAsync(Guid.NewGuid(), ReimbursementStatusType.Rejected));
             Assert.Equal("Request not found.", ex.Message);
         }
 
-        // ─── DELETE ───────────────────────────────────────────────────────────────
-
         [Fact]
         public async Task DeleteReimbursementRequest_SubmittedRequest_ReturnsTrue()
         {
-            // Arrange
+       
             var req = MakeRequest(ReimbursementStatusType.Submitted);
             _repoMock.Setup(r => r.GetByIdAsync(req.ReimbursementRequestId)).ReturnsAsync(req);
             _repoMock.Setup(r => r.Delete(req));
             _repoMock.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
-            // Act
+          
             var result = await _service.DeleteReimbursementRequest(req.ReimbursementRequestId);
 
-            // Assert
             Assert.True(result);
             _repoMock.Verify(r => r.Delete(req), Times.Once);
         }
@@ -312,25 +291,24 @@ namespace Reimbursement_testing
         [Fact]
         public async Task DeleteReimbursementRequest_NotFound_ReturnsFalse()
         {
-            // Arrange
+         
             _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((ReimbursementRequest?)null);
 
-            // Act
+          
             var result = await _service.DeleteReimbursementRequest(Guid.NewGuid());
 
-            // Assert
+          
             Assert.False(result);
         }
 
         [Fact]
         public async Task DeleteReimbursementRequest_NonSubmittedStatus_ThrowsException()
         {
-            // Arrange
+          
             var req = MakeRequest(ReimbursementStatusType.ManagerApproved);
             _repoMock.Setup(r => r.GetByIdAsync(req.ReimbursementRequestId)).ReturnsAsync(req);
 
-            // Act & Assert
             var ex = await Assert.ThrowsAsync<Exception>(() =>
                 _service.DeleteReimbursementRequest(req.ReimbursementRequestId));
             Assert.Contains("Only submitted", ex.Message);

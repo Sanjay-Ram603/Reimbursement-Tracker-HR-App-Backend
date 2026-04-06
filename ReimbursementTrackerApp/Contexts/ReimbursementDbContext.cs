@@ -66,7 +66,7 @@ namespace ReimbursementTrackerApp.Contexts
                 .HasForeignKey(r => r.ChangedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Decimal precision configuration
+           
 
             modelBuilder.Entity<ReimbursementRequest>()
                 .Property(r => r.Amount)

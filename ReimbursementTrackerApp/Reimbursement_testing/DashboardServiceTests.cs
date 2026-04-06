@@ -72,8 +72,6 @@ namespace Reimbursement_testing
             await _context.SaveChangesAsync();
         }
 
-        // ─── GET MY DASHBOARD ─────────────────────────────────────────────────────
-
         [Fact]
         public async Task GetMyDashboardAsync_NoRequests_ReturnsZeroCounts()
         {

@@ -18,7 +18,6 @@ namespace ReimbursementTrackerApp.Controllers
             _service = service;
         }
 
-        // CREATE REQUEST (WITH FILE UPLOAD)
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] CreateReimbursementRequestDto request)
         {
@@ -29,7 +28,7 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok(id);
         }
 
-        // GET USER REQUESTS
+   
         [HttpGet]
         public async Task<IActionResult> GetMyRequests()
         {
@@ -40,7 +39,7 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok(result);
         }
 
-        // GET BY ID
+  
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -52,7 +51,7 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok(result);
         }
 
-        // UPDATE (EDIT ONLY)
+      
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateReimbursementStatusRequestDto request)
         {
@@ -60,7 +59,7 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok("Request updated successfully");
         }
 
-        // DELETE
+     
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -72,7 +71,7 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok("Request deleted successfully");
         }
 
-        // GET ALL REQUESTS (Admin + Finance)
+      
         [HttpGet("all")]
         public async Task<IActionResult> GetAllRequests()
         {
@@ -80,7 +79,7 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok(result);
         }
 
-        // ✅ GET MANAGER & FINANCE REQUESTS (Head only)
+      
         [HttpGet("head")]
         public async Task<IActionResult> GetHeadRequests()
         {
@@ -92,7 +91,7 @@ namespace ReimbursementTrackerApp.Controllers
             return Ok(headRequests);
         }
 
-        // DOWNLOAD ATTACHMENT
+        
         [HttpGet("download/{id}")]
         public async Task<IActionResult> DownloadAttachment(Guid id)
         {
@@ -116,7 +115,7 @@ namespace ReimbursementTrackerApp.Controllers
             return File(fileBytes, contentType, Path.GetFileName(filePath));
         }
 
-        // HELPER METHOD
+
         private string GetContentType(string path)
         {
             var types = new Dictionary<string, string>
